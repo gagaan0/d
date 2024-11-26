@@ -1,0 +1,323 @@
+Array
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int a[MAX], pos, elem; 
+int n = 0;
+
+void create();
+void display(); 
+void insert(); 
+void del();
+
+int main() {
+    int choice;
+    while (1) {	
+        printf("\n\n~~~~MENU~~~~"); 
+        printf("\n=>1. Create an array of N integers"); 
+        printf("\n=>2. Display of array elements"); 
+        printf("\n=>3. Insert ELEM at a given POS");
+        printf("\n=>4. Delete an element at a given POS"); 
+        printf("\n=>5. Exit");
+        printf("\n Enter your choice: "); 
+        scanf("%d", &choice); 
+        switch (choice) {	
+            case 1: create(); break;
+            case 2: display(); break;
+            case 3: insert(); break;
+            case 4: del(); break;
+            case 5: exit(0); break;
+            default: printf("\nPlease enter a valid choice:");
+        }
+    }
+}
+
+void create() {
+    int i;
+    printf("\n Enter the number of elements: "); 
+    scanf("%d", &n);
+    printf("\n Enter the elements: "); 
+    for (i = 0; i < n; i++) {
+        scanf("%d", &a[i]);
+    }	
+}
+
+void display() {
+    int i;
+    if (n == 0) {
+        printf("\n No elements to display"); 
+        return;
+    }
+    printf("\nArray elements are: "); 
+    for (i = 0; i < n; i++)
+        printf("%d\t", a[i]);
+}
+
+void insert() {
+    int i;
+    if (n == MAX) {
+        printf("\nArray is full. Insertion is not possible"); 
+        return;
+    }
+    do {
+        printf("\n Enter a valid position where element to be inserted: "); 
+        scanf("%d", &pos);
+    } while (pos > n);
+    printf("\n Enter the value to be inserted: "); 
+    scanf("%d", &elem);
+    for (i = n - 1; i >= pos; i--) {
+        a[i + 1] = a[i];
+    }
+    a[pos] = elem; 
+    n = n + 1; 
+    display();
+}
+
+void del() {
+    int i;
+    if (n == 0) {
+        printf("\nArray is empty and no elements to delete"); 
+        return;
+    }
+    do {
+        printf("\n Enter a valid position from where element to be deleted: "); 
+        scanf("%d", &pos);
+    } while (pos >= n);
+    elem = a[pos];
+    printf("\n Deleted element is: %d\n", elem); 
+    for (i = pos; i < n - 1; i++) {
+        a[i] = a[i + 1];
+    }
+    n = n - 1;
+    display();
+}
+
+
+stack
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+
+int s[MAX]; 
+int top = -1;
+
+void push(int item); 
+int pop();
+void display();
+
+int main() {
+    int choice, item; 
+    while (1) {
+        printf("\n\n~~~~~~Menu~~~~~~ : ");
+        printf("\n=>1.Push an Element to Stack"); 
+        printf("\n=>2.Pop an Element from Stack"); 
+        printf("\n=>3.Display Stack"); 
+        printf("\n=>4.Exit");
+        printf("\n Enter your choice: "); 
+        scanf("%d", &choice); 
+        switch (choice) {
+            case 1: 
+                printf("\n Enter an element to be pushed: "); 
+                scanf("%d", &item);
+                push(item);
+                break;
+            case 2: 
+                item = pop(); 
+                if (item != -1)
+                    printf("\n Element popped is: %d", item);
+                break;	
+            case 3: 
+                display(); 
+                break;
+            case 4: 
+                exit(1);
+            default: 
+                printf("\n Please enter valid choice"); 
+        }
+    }	
+}
+
+void push(int item) {
+    if (top == MAX - 1) {
+        printf("\n~~~~Stack overflow~~~~"); 
+        return;
+    }	
+    top = top + 1; 
+    s[top] = item;
+}
+
+int pop() {
+    int item;
+    if (top == -1) {	
+        printf("\n~~~~Stack underflow~~~~"); 
+        return -1;
+    }
+    item = s[top];  	
+
+
+infix to post
+#include <stdio.h>
+#include <ctype.h>
+
+char s[20];
+int top = -1;
+
+void push(char);
+char pop();
+int prior(char);
+
+int main() {
+    char infix[20], postfix[20];
+    int i, j = 0;
+    printf("Enter the infix expression: ");
+    scanf("%s", infix);
+    push('#');
+    for (i = 0; infix[i] != '\0'; i++) {
+        if (isalnum(infix[i]))
+            postfix[j++] = infix[i];
+        else if (infix[i] == '(')
+            push(infix[i]);
+        else if (infix[i] == ')') {
+            while (s[top] != '(')
+                postfix[j++] = pop();
+            pop();
+        } else {
+            while (prior(s[top]) >= prior(infix[i]))
+                postfix[j++] = pop();
+            push(infix[i]);
+        }
+    }
+    while (s[top] != '#')
+        postfix[j++] = pop();
+    postfix[j] = '\0';
+    printf("Postfix expression is: %s\n", postfix);
+    return 0;
+}
+
+void push(char x) {
+    s[++top] = x;
+}
+
+char pop() {
+    return (s[top--]);
+}
+
+int prior(char x) {
+    if (x == '^') return 3;
+    if (x == '*' || x == '%' || x == '/') return 2;
+    if (x == '+' || x == '-') return 1;
+    if (x == '(' || x == '#') return 0;
+}
+
+
+post
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
+int s[20];
+int top = -1;
+
+void push(int);
+int pop();
+
+int main() {
+    char postfix[20];
+    int op1, op2, res, i;
+    printf("Enter the postfix expression: ");
+    scanf("%s", postfix);
+    for (i = 0; postfix[i] != '\0'; i++) {
+        if (isdigit(postfix[i]))
+            push(postfix[i] - '0');
+        else {
+            op2 = pop();
+            op1 = pop();
+            switch (postfix[i]) {
+                case '+': res = op1 + op2; break;
+                case '-': res = op1 - op2; break;
+                case '*': res = op1 * op2; break;
+                case '/': res = op1 / op2; break;
+                case '%': res = op1 % op2; break;
+                case '^': res = pow(op1, op2); break;
+            }
+            push(res);
+        }
+    }
+    printf("Result of postfix expression is: %d\n", pop());
+    return 0;
+}
+
+void push(int ch) {
+    s[++top] = ch;
+}
+
+int pop() {
+    return (s[top--]);
+}
+
+
+
+queue
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 3
+
+int q[MAX], f = -1, r = -1;
+
+void insert();
+void rem();
+void display();
+
+int main() {
+    int ch;
+    do {
+        printf("\n1.Insert\n2.Remove\n3.Display\n4.Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: insert(); break;
+            case 2: rem(); break;
+            case 3: display(); break;
+            case 4: exit(0);
+            default: printf("Invalid choice\n");
+        }
+    } while (ch != 4);
+    return 0;
+}
+
+void insert() {
+    int e;
+    if (r == MAX - 1) {
+        printf("Queue is full\n");
+        return;
+    }
+    printf("Enter the element to be inserted: ");
+    scanf("%d", &e);
+    r = r + 1;
+    q[r] = e;
+    if (f == -1) f = 0;
+}
+
+void rem() {
+    int e;
+    if (f == -1) {
+        printf("Queue is empty\n");
+        return;
+    }
+    e = q[f];
+    if (f == r) f = r = -1;
+    else f = f + 1;
+    printf("Deleted element is: %d\n", e);
+}
+
+void display() {
+    int i;
+    if (f == -1) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Elements of queue are: ");
+    for (i = f; i <= r;
+
+
