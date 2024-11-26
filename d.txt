@@ -318,6 +318,31 @@ void display() {
         return;
     }
     printf("Elements of queue are: ");
-    for (i = f; i <= r;
+    for (i = f; i <= r; i ++)
+	 printf("%d\t",q[i]);
+}
 
 
+recur
+#include<stdio.h>
+int fibo(int);
+int main()
+{
+    int i,num;
+    printf("Enter the fibo num : ");
+    scanf("%d",&num);
+    printf("fibo seris : ");
+    for(i=0;i<num;i++)
+    {
+        
+    printf("%d\t",fibo(i));
+    }
+    return 0;
+}
+int fibo(int n)
+{
+    if (n == 0 || n == 1)
+    return n;
+    else
+    return fibo( n - 1 ) + fibo( n - 2 );
+}
