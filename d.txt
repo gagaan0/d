@@ -146,7 +146,20 @@ int pop() {
         printf("\n~~~~Stack underflow~~~~"); 
         return -1;
     }
-    item = s[top];  	
+    item = s[top];
+    top=top-1;
+    return item;
+}
+void dispaly(){
+int i;
+if(top==-1){
+printf("stack empty");
+return;
+}
+printf("stack elem are:\n");
+for(i=top;i>=0;i--)
+printf("|%d|\n",s[i]);
+}
 
 infix to post
 
