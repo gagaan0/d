@@ -122,16 +122,17 @@ int main() {
                 if (item != -1)
                     printf("\n Element popped is: %d", item);
                 break;	
-            case 3: 
+            case 3:
                 display(); 
                 break;
             case 4: 
-                exit(1);
+                exit(0); 
             default: 
                 printf("\n Please enter valid choice"); 
         }
     }	
 }
+
 void push(int item) {
     if (top == MAX - 1) {
         printf("\n~~~~Stack overflow~~~~"); 
@@ -140,6 +141,7 @@ void push(int item) {
     top = top + 1; 
     s[top] = item;
 }
+
 int pop() {
     int item;
     if (top == -1) {	
@@ -147,18 +149,19 @@ int pop() {
         return -1;
     }
     item = s[top];
-    top=top-1;
+    top = top - 1;
     return item;
 }
-void dispaly(){
-int i;
-if(top==-1){
-printf("stack empty");
-return;
-}
-printf("stack elem are:\n");
-for(i=top;i>=0;i--)
-printf("|%d|\n",s[i]);
+
+void display() { 
+    int i;
+    if (top == -1) {
+        printf("Stack is empty\n");
+        return;
+    }
+    printf("Stack elements are:\n");
+    for (i = top; i >= 0; i--)
+        printf("|%d|\n", s[i]);
 }
 
 infix to post
